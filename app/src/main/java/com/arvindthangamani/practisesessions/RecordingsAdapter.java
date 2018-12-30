@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class RecordingsAdapter extends RecyclerView.Adapter<RecordingsAdapter.MyViewHolder> {
@@ -39,8 +42,12 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecordingsAdapter.My
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Recording recording = recordingList.get(position);
         holder.name.setText(recording.getName());
-        holder.date.setText(String.valueOf(recording.getStartTimestamp()));
-        holder.duration.setText(String.valueOf(recording.getDurationInMs()));
+        Date date = new Date(recording.getStartTimestamp());
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        holder.date.setText(format.format(date));
+        long minutes = (recording.getDurationInMs() / 1000)  / 60;
+        int seconds = (int)((recording.getDurationInMs() / 1000) % 60);
+        holder.duration.setText(String.valueOf(minutes + ":" + seconds));
     }
 
     @Override
